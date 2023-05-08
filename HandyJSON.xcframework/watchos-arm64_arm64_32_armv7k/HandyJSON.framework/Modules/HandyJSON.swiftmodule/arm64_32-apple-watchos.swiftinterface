@@ -1,0 +1,233 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.8 (swiftlang-5.8.0.124.2 clang-1403.0.22.11.100)
+// swift-module-flags: -target arm64_32-apple-watchos3.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name HandyJSON
+// swift-module-flags-ignorable: -enable-bare-slash-regex
+import Foundation
+@_exported import HandyJSON
+import Swift
+import UIKit
+import _Concurrency
+import _StringProcessing
+@_silgen_name("swift_getTypeByMangledNameInContext")
+public func _getTypeByMangledNameInContext(_ name: Swift.UnsafePointer<Swift.UInt8>, _ nameLength: Swift.Int, genericContext: Swift.UnsafeRawPointer?, genericArguments: Swift.UnsafeRawPointer?) -> (any Any.Type)?
+@_silgen_name("swift_getTypeContextDescriptor")
+public func _swift_getTypeContextDescriptor(_ metadata: Swift.UnsafeRawPointer?) -> Swift.UnsafeRawPointer?
+public struct DeserializeOptions : Swift.OptionSet {
+  public let rawValue: Swift.Int
+  public static let caseInsensitive: DeserializeOptions
+  public static let defaultOptions: DeserializeOptions
+  public init(rawValue: Swift.Int)
+  public typealias ArrayLiteralElement = DeserializeOptions
+  public typealias Element = DeserializeOptions
+  public typealias RawValue = Swift.Int
+}
+public enum DebugMode : Swift.Int {
+  case verbose
+  case debug
+  case error
+  case none
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public struct HandyJSONConfiguration {
+  public static var debugMode: DebugMode {
+    get
+    set
+  }
+  public static var deserializeOptions: DeserializeOptions
+}
+open class CustomDateFormatTransform : DateFormatterTransform {
+  public init(formatString: Swift.String)
+  @objc deinit
+}
+open class DataTransform : TransformType {
+  public typealias Object = Foundation.Data
+  public typealias JSON = Swift.String
+  public init()
+  open func transformFromJSON(_ value: Any?) -> Foundation.Data?
+  open func transformToJSON(_ value: Foundation.Data?) -> Swift.String?
+  @objc deinit
+}
+open class DateFormatterTransform : TransformType {
+  public typealias Object = Foundation.Date
+  public typealias JSON = Swift.String
+  final public let dateFormatter: Foundation.DateFormatter
+  public init(dateFormatter: Foundation.DateFormatter)
+  open func transformFromJSON(_ value: Any?) -> Foundation.Date?
+  open func transformToJSON(_ value: Foundation.Date?) -> Swift.String?
+  @objc deinit
+}
+open class DateTransform : TransformType {
+  public typealias Object = Foundation.Date
+  public typealias JSON = Swift.Double
+  public init()
+  open func transformFromJSON(_ value: Any?) -> Foundation.Date?
+  open func transformToJSON(_ value: Foundation.Date?) -> Swift.Double?
+  @objc deinit
+}
+extension HandyJSON {
+  public static func deserialize(from dict: Foundation.NSDictionary?, designatedPath: Swift.String? = nil) -> Self?
+  public static func deserialize(from dict: [Swift.String : Any]?, designatedPath: Swift.String? = nil) -> Self?
+  public static func deserialize(from json: Swift.String?, designatedPath: Swift.String? = nil) -> Self?
+}
+extension Swift.Array where Element : HandyJSON {
+  public static func deserialize(from json: Swift.String?, designatedPath: Swift.String? = nil) -> [Element?]?
+  public static func deserialize(from array: Foundation.NSArray?) -> [Element?]?
+  public static func deserialize(from array: [Any]?) -> [Element?]?
+}
+@_hasMissingDesignatedInitializers public class JSONDeserializer<T> where T : HandyJSON {
+  public static func deserializeFrom(dict: Foundation.NSDictionary?, designatedPath: Swift.String? = nil) -> T?
+  public static func deserializeFrom(dict: [Swift.String : Any]?, designatedPath: Swift.String? = nil) -> T?
+  public static func deserializeFrom(json: Swift.String?, designatedPath: Swift.String? = nil) -> T?
+  public static func update(object: inout T, from dict: [Swift.String : Any]?, designatedPath: Swift.String? = nil)
+  public static func update(object: inout T, from json: Swift.String?, designatedPath: Swift.String? = nil)
+  public static func deserializeModelArrayFrom(json: Swift.String?, designatedPath: Swift.String? = nil) -> [T?]?
+  public static func deserializeModelArrayFrom(array: Foundation.NSArray?) -> [T?]?
+  public static func deserializeModelArrayFrom(array: [Any]?) -> [T?]?
+  @objc deinit
+}
+open class EnumTransform<T> : TransformType where T : Swift.RawRepresentable {
+  public typealias Object = T
+  public typealias JSON = T.RawValue
+  public init()
+  open func transformFromJSON(_ value: Any?) -> T?
+  open func transformToJSON(_ value: T?) -> T.RawValue?
+  @objc deinit
+}
+public protocol _RawEnumProtocol : _Transformable {
+  static func _transform(from object: Any) -> Self?
+  func _plainValue() -> Any?
+}
+extension Swift.RawRepresentable where Self : _RawEnumProtocol {
+  public static func _transform(from object: Any) -> Self?
+  public func _plainValue() -> Any?
+}
+public protocol HandyJSONCustomTransformable : _ExtendCustomBasicType {
+}
+public protocol HandyJSON : _ExtendCustomModelType {
+}
+public protocol HandyJSONEnum : _RawEnumProtocol {
+}
+public protocol _ExtendCustomBasicType : _Transformable {
+  static func _transform(from object: Any) -> Self?
+  func _plainValue() -> Any?
+}
+public protocol _ExtendCustomModelType : _Transformable {
+  init()
+  mutating func willStartMapping()
+  mutating func mapping(mapper: HelpingMapper)
+  mutating func didFinishMapping()
+}
+extension _ExtendCustomModelType {
+  public mutating func willStartMapping()
+  public mutating func mapping(mapper: HelpingMapper)
+  public mutating func didFinishMapping()
+}
+public typealias CustomMappingKeyValueTuple = (Swift.Int, MappingPropertyHandler)
+public class MappingPropertyHandler {
+  public init(rawPaths: [Swift.String]?, assignmentClosure: ((Any?) -> (Any?))?, takeValueClosure: ((Any?) -> (Any?))?)
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class HelpingMapper {
+  public func specify<T>(property: inout T, name: Swift.String)
+  public func specify<T>(property: inout T, converter: @escaping (Swift.String) -> T)
+  public func specify<T>(property: inout T, name: Swift.String?, converter: ((Swift.String) -> T)?)
+  public func exclude<T>(property: inout T)
+  @objc deinit
+}
+infix operator <-- : LogicalConjunctionPrecedence
+public func <-- <T>(property: inout T, name: Swift.String) -> CustomMappingKeyValueTuple
+public func <-- <T>(property: inout T, names: [Swift.String]) -> CustomMappingKeyValueTuple
+public func <-- <Transform>(property: inout Transform.Object, transformer: Transform) -> CustomMappingKeyValueTuple where Transform : TransformType
+public func <-- <Transform>(property: inout Transform.Object, transformer: (Swift.String?, Transform?)) -> CustomMappingKeyValueTuple where Transform : TransformType
+public func <-- <Transform>(property: inout Transform.Object, transformer: ([Swift.String], Transform?)) -> CustomMappingKeyValueTuple where Transform : TransformType
+public func <-- <Transform>(property: inout Transform.Object?, transformer: Transform) -> CustomMappingKeyValueTuple where Transform : TransformType
+public func <-- <Transform>(property: inout Transform.Object?, transformer: (Swift.String?, Transform?)) -> CustomMappingKeyValueTuple where Transform : TransformType
+public func <-- <Transform>(property: inout Transform.Object?, transformer: ([Swift.String], Transform?)) -> CustomMappingKeyValueTuple where Transform : TransformType
+infix operator <<< : AssignmentPrecedence
+public func <<< (mapper: HelpingMapper, mapping: CustomMappingKeyValueTuple)
+public func <<< (mapper: HelpingMapper, mappings: [CustomMappingKeyValueTuple])
+infix operator >>> : AssignmentPrecedence
+public func >>> <T>(mapper: HelpingMapper, property: inout T)
+open class HexColorTransform : TransformType {
+  public typealias Object = UIKit.UIColor
+  public typealias JSON = Swift.String
+  public init(prefixToJSON: Swift.Bool = false, alphaToJSON: Swift.Bool = false)
+  open func transformFromJSON(_ value: Any?) -> HexColorTransform.Object?
+  open func transformToJSON(_ value: HexColorTransform.Object?) -> HexColorTransform.JSON?
+  @objc deinit
+}
+open class ISO8601DateTransform : DateFormatterTransform {
+  public init()
+  @objc deinit
+}
+public protocol _Measurable {
+}
+open class NSDecimalNumberTransform : TransformType {
+  public typealias Object = Foundation.NSDecimalNumber
+  public typealias JSON = Swift.String
+  public init()
+  open func transformFromJSON(_ value: Any?) -> Foundation.NSDecimalNumber?
+  open func transformToJSON(_ value: Foundation.NSDecimalNumber?) -> Swift.String?
+  @objc deinit
+}
+extension HandyJSON {
+  public func toJSON() -> [Swift.String : Any]?
+  public func toJSONString(prettyPrint: Swift.Bool = false) -> Swift.String?
+}
+extension Swift.Collection where Self.Element : HandyJSON {
+  public func toJSON() -> [[Swift.String : Any]?]
+  public func toJSONString(prettyPrint: Swift.Bool = false) -> Swift.String?
+}
+public protocol _Transformable : _Measurable {
+}
+open class TransformOf<ObjectType, JSONType> : TransformType {
+  public typealias Object = ObjectType
+  public typealias JSON = JSONType
+  public init(fromJSON: @escaping (JSONType?) -> ObjectType?, toJSON: @escaping (ObjectType?) -> JSONType?)
+  open func transformFromJSON(_ value: Any?) -> ObjectType?
+  open func transformToJSON(_ value: ObjectType?) -> JSONType?
+  @objc deinit
+}
+public protocol TransformType {
+  associatedtype Object
+  associatedtype JSON
+  func transformFromJSON(_ value: Any?) -> Self.Object?
+  func transformToJSON(_ value: Self.Object?) -> Self.JSON?
+}
+open class URLTransform : TransformType {
+  public typealias Object = Foundation.URL
+  public typealias JSON = Swift.String
+  public init(shouldEncodeURLString: Swift.Bool = true)
+  open func transformFromJSON(_ value: Any?) -> Foundation.URL?
+  open func transformToJSON(_ value: Foundation.URL?) -> Swift.String?
+  @objc deinit
+}
+extension Swift.Int : _Transformable {}
+extension Swift.UInt : _Transformable {}
+extension Swift.Int8 : _Transformable {}
+extension Swift.Int16 : _Transformable {}
+extension Swift.Int32 : _Transformable {}
+extension Swift.Int64 : _Transformable {}
+extension Swift.UInt8 : _Transformable {}
+extension Swift.UInt16 : _Transformable {}
+extension Swift.UInt32 : _Transformable {}
+extension Swift.UInt64 : _Transformable {}
+extension Swift.Bool : _Transformable {}
+extension Swift.Float : _Transformable {}
+extension Swift.Double : _Transformable {}
+extension Swift.String : _Transformable {}
+extension Swift.Optional : _Transformable {}
+extension Swift.Array : _Transformable {}
+extension Swift.Set : _Transformable {}
+extension Swift.Dictionary : _Transformable {}
+extension Foundation.NSString : _Transformable {}
+extension Foundation.NSNumber : _Transformable {}
+extension Foundation.NSArray : _Transformable {}
+extension Foundation.NSDictionary : _Transformable {}
+extension DebugMode : Swift.Equatable {}
+extension DebugMode : Swift.Hashable {}
+extension DebugMode : Swift.RawRepresentable {}
