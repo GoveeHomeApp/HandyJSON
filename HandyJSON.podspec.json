@@ -5,11 +5,11 @@
   },
   "license": "Apache License 2.0",
   "requires_arc": true,
-  "version": "5.0.2",
+  "version": "5.0.4",
   "homepage": "https://github.com/alibaba/handyjson",
   "source": {
     "git": "https://github.com/alibaba/HandyJSON.git",
-    "tag": "5.0.2"
+    "tag": "5.0.4-beta"
   },
   "summary": "A Json Serialization & Deserialization Library for Swift",
   "description": "A Handy Json Library for Swift which serials object to json and deserials json to object",
